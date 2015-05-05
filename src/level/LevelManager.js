@@ -2,14 +2,14 @@ var LevelManager = {
 
     getLevel: function (num) {
         var level;
-       /* try {
-            if (cc.sys.os == cc.sys.OS_ANDROID) {
-                level = this.readLevel(num);
-            } else {
-                level = this.createStub();
-            }
-        } catch (err) {*/
-            level = this.createStub();
+        /* try {
+         if (cc.sys.os == cc.sys.OS_ANDROID) {
+         level = this.readLevel(num);
+         } else {
+         level = this.createStub();
+         }
+         } catch (err) {*/
+        level = this.createStub();
         //}
         level.num = num;
         return level;
@@ -34,8 +34,6 @@ var LevelManager = {
         var row;
         var symb = "+";
         var cells = [];
-
-        var keys = Object.keys(expression);
         for (var i = 0; i < rows; i++) {
             row = [];
             for (var j = 0; j < columns; j++) {

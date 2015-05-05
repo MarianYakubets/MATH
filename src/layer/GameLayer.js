@@ -3,20 +3,12 @@ var GameLayer = cc.Layer.extend({
     ctor: function (level, label) {
         this._super();
         this.init();
-        var cellCanvas = new cc.Node();
-
-        this.controller = new CellController(cellCanvas, level, label);
-        cellCanvas.setPosition(DIM.center);
-        this.addChild(cellCanvas);
+        var grid = new Grid();
+        this.controller = new CellController(grid, level, label);
+        this.addChild(grid);
     },
 
     init: function () {
         this._super();
-        //this.scheduleUpdate();
-    },
-
-    update: function (dt) {
-
     }
-
 });

@@ -24,9 +24,14 @@
         "src/level/LevelIO.js",
         "src/model/enums.js",
         "src/model/Cell.js",
+        "src/editor/NumButton.js",
+        "src/editor/EditorPanel.js",
+        "src/editor/EditorDialog.js",
         "src/control/CellController.js",
         "src/util/globals.js",
+        "src/util/GridUtils.js",
         "src/graphics/Square.js",
+        "src/graphics/Grid.js",
         "src/graphics/box.js"
     ]
 }

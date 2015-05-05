@@ -1,11 +1,11 @@
 var GameScene = cc.Scene.extend({
     space: null,
     gameLayer: null,
-    level: null,
+    num: null,
 
-    ctor: function (level) {
+    ctor: function (num) {
         this._super();
-        this.level = level
+        this.num = num
 
     },
 
@@ -17,7 +17,7 @@ var GameScene = cc.Scene.extend({
         label.setFontFillColor(cc.color(255, 255, 255));
         this.addChild(new BackgroundLayer(), 0);
         this.addChild(label, 10);
-        this.addChild(new GameLayer(this.level, label), 1);
+        this.addChild(new GameLayer(LevelManager.getLevel(this.num), label), 1);
 
         var backItem = new cc.MenuItemFont("back", function () {
             cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene()));
@@ -25,6 +25,7 @@ var GameScene = cc.Scene.extend({
 
         var menu = new cc.Menu(backItem);
         menu.setPosition(DIM.width / 2, 50);
+
         this.addChild(menu, 9);
     }
 });

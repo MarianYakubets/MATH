@@ -2,7 +2,7 @@ var Cell = cc.Class.extend({
     pos: null,
     num: 0,
     type: Type.default,
-    square: null,
+    view: null,
 
     ctor: function (pos, type, num) {
         this.pos = pos;
@@ -15,18 +15,18 @@ var Cell = cc.Class.extend({
             num = "+" + num;
         }
         this.num = num;
-        this.square.setNum(num);
+        this.view.setNum(num);
     },
 
     select: function () {
-        if (this.square != null) {
-            this.square.select();
+        if (this.view != null) {
+            this.view.select();
         }
     },
 
     deselect: function () {
-        if (this.square != null) {
-            this.square.deselect();
+        if (this.view != null) {
+            this.view.deselect();
         }
     }
 
