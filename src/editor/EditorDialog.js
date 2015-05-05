@@ -21,7 +21,7 @@ var EditorDialog = cc.Layer.extend({
 
     onTouchBegan: function (p) {
         var cell = GridUtils.getCellByPoint(p, this.grid.border, this.grid.size, this.level.cells);
-        cell.setNum(1);
+        this.addChild(new EditorCellDialog(cell));
     }
 
 

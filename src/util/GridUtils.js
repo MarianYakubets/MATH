@@ -30,11 +30,17 @@ var GridUtils = {
             },
 
             onTouchMoved: function (touch, event) {
+                if(this.controller.onTouchMoved == undefined){
+                    return;
+                }
                 this.controller.onTouchMoved(touch.getLocation());
                 return true;
             },
 
             onTouchEnded: function (touch, event) {
+                if(this.controller.onTouchEnded == undefined){
+                    return;
+                }
                 this.controller.onTouchEnded();
             }
         });

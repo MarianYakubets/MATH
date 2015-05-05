@@ -28,6 +28,7 @@
         "src/editor/EditorPanel.js",
         "src/editor/EditorDialog.js",
         "src/control/CellController.js",
+        "src/editor/EditorCellDialog.js",
         "src/util/globals.js",
         "src/util/GridUtils.js",
         "src/graphics/Square.js",
