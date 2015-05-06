@@ -2,7 +2,7 @@ var EditorCellDialog = cc.Layer.extend({
     cell: null,
     nums: [],
     grid: null,
-    newValue: null,
+    field: null,
 
     ctor: function (cell) {
         this._super();
@@ -13,17 +13,16 @@ var EditorCellDialog = cc.Layer.extend({
         this.cell = cell;
 
         this.addChild(new BackgroundLayer());
-        var label = new cc.LabelTTF("OLD: " + cell.num, "Arial");
+        var label = new cc.LabelTTF("OLD: " + cell.value, "Arial");
         label.setPosition(DIM.width / 2, DIM.height * .95);
         label.setFontSize(40);
         label.setFontFillColor(cc.color(255, 255, 255));
-        //this.addChild(label);
 
-        this.newValue = new cc.LabelTTF("" + cell.num, "Arial");
-        this.newValue.setPosition(DIM.width / 2, DIM.height * .8);
-        this.newValue.setFontSize(60);
-        this.newValue.setFontFillColor(cc.color(255, 255, 255));
-        this.addChild(this.newValue, 20);
+        this.field = new cc.LabelTTF("" + cell.value, "Arial");
+        this.field.setPosition(DIM.width / 2, DIM.height * .8);
+        this.field.setFontSize(60);
+        this.field.setFontFillColor(cc.color(255, 255, 255));
+        this.addChild(this.field, 20);
 
         this.grid = new Grid();
         this.addChild(this.grid);
@@ -35,13 +34,12 @@ var EditorCellDialog = cc.Layer.extend({
         var symbols = [".", "+", "-", "*", "/", "<<<"];
         this.nums = GridUtils.buildGrid(4, 4);
         var figures = [];
+        var add = this.addChar(this.field);
         for (var i = 0; i < 10; i++) {
-            figures.push(this.createTextButton("" + i, function(){
-
-            }));
+            figures.push(this.createTextButton("" + i, add));
         }
         for (var i = 0; i < symbols.length; i++) {
-            figures.push(this.createTextButton(symbols[i], this.addChar(symbols[i])));
+            figures.push(this.createTextButton(symbols[i], add));
         }
 
         var menu = new cc.Menu(figures);
@@ -50,17 +48,23 @@ var EditorCellDialog = cc.Layer.extend({
         this.addChild(menu);
     },
 
-    addChar: function (char) {
-        if (char == "<<<") {
 
-        } else {
-            this.newValue.setString(this.newValue.getString() + char);
+    addChar: function (field) {
+        return function (char) {
+            char = char.getString();
+            var str = field.getString();
+            if (char == "<<<" && str.length > 0) {
+                str = str.substring(0, str.length - 1);
+            } else {
+                str += char;
+            }
+            field.setString(str);
         }
     },
 
     addButtons: function () {
-        var back = this.createTextButton("back", this.goBack());
-        var save = this.createTextButton("save", this.save());
+        var back = this.createTextButton("back", this.goBack(this));
+        var save = this.createTextButton("save", this.save(this));
         var menu = new cc.Menu(save, back);
         menu.alignItemsInColumns(2);
         menu.setPosition(DIM.width / 2, 200);
@@ -68,13 +72,17 @@ var EditorCellDialog = cc.Layer.extend({
         this.addChild(menu);
     },
 
-    save: function () {
-        this.cell.num = this.newValue.getString();
-        this.goBack();
+    save: function (parent) {
+        return function () {
+            parent.cell.setNum(parent.field.getString());
+            parent.goBack(parent)();
+        }
     },
 
-    goBack: function () {
-        // this.visible = false;
+    goBack: function (parent) {
+        return function () {
+            parent.visible = false;
+        }
     },
 
     createTextButton: function (name, callBack) {

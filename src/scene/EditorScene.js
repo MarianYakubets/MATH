@@ -10,6 +10,6 @@ var EditorScene = cc.Scene.extend({
     onEnter: function () {
         this._super();
         this.addChild(new BackgroundLayer());
-        this.addChild(new EditorDialog(new Level(this.num, GridUtils.buildGrid(6, 6))));
+        this.addChild(new EditorDialog(LevelManager.getLevel(this.num)));
     }
 });

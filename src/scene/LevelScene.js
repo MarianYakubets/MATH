@@ -13,7 +13,7 @@ var LevelScene = cc.Scene.extend({
         var levels = [];
         for (var i = 1; i <= 20; i++) {
             var levelItem = new cc.MenuItemFont(i.toString(), function (text) {
-                this.nextScene.num = text.getLabel()._originalText;
+                this.nextScene.value = text.getLabel()._originalText;
                 cc.director.runScene(new cc.TransitionFade(1.2, this.nextScene));
             }, this);
             levelItem.setFontSize(100);

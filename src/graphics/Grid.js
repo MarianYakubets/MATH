@@ -26,7 +26,7 @@ var Grid = cc.Node.extend({
                 posX = this.border + this.size * i + this.size * .5 - DIM.width / 2;
                 posY = this.border + this.size * j + this.size * .5 - DIM.width / 2;
 
-                square = new Box(cells[j][i].num, cc.p(this.size, this.size));
+                square = new Box(cells[j][i].value, cc.p(this.size, this.size));
                 square.setPosition(posX, posY);
 
                 cells[j][i].view = square;

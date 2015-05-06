@@ -72,7 +72,7 @@ var CellController = cc.Class.extend({
     onTouchEnded: function (p) {
         var result = '';
         this.chosenCells.forEach(function (cell) {
-            result += cell.num;
+            result += cell.value;
         });
         try {
             result = eval(result);
