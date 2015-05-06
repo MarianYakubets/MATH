@@ -4,7 +4,22 @@ var LevelIO = {
         if (data == null || data.length < 5) {
             return new Level(num, GridUtils.buildGrid(5, 6));
         }
-        return JSON.parse(data);
+        return this.createLevelFromSavedData(JSON.parse(data));
+    },
+
+    createLevelFromSavedData: function (data) {
+        var cells = [];
+        var newCell;
+        var newRow;
+        data.cells.forEach(function (row) {
+            newRow = [];
+            row.forEach(function (cell) {
+                newCell = new Cell(cell.pos, cell.type, cell.value);
+                newRow.push(newCell);
+            });
+            cells.push(newRow);
+        });
+        return new Level(data.num, cells);
     },
 
     save: function (level) {

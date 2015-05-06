@@ -4,10 +4,10 @@ var Cell = cc.Class.extend({
     type: Type.default,
     view: null,
 
-    ctor: function (pos, type, num) {
+    ctor: function (pos, type, value) {
         this.pos = pos;
         this.type = type;
-        this.value = num;
+        this.value = value;
     },
 
     setNum: function (num) {
