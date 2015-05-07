@@ -9,6 +9,7 @@ var GridUtils = {
             }
             cells.push(row);
         }
+
         return cells;
     },
 
