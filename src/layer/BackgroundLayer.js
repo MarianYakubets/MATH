@@ -1,13 +1,13 @@
 var BackgroundLayer = cc.Layer.extend({
-    ctor:function () {
+    ctor: function () {
         this._super();
         this.init();
     },
 
-    init:function () {
+    init: function () {
         this._super();
 
-        var layer = new cc.LayerColor(cc.color(228,0,91));
+        var layer = new cc.LayerColor(cc.color(2, 120, 120));
 
         layer.ignoreAnchor = false;
         layer.anchorX = 0.5;

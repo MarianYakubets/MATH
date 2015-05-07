@@ -12,10 +12,7 @@ var LevelScene = cc.Scene.extend({
 
         var levels = [];
         for (var i = 1; i <= 20; i++) {
-            var levelItem = new cc.MenuItemFont(i.toString(), function (text) {
-                this.nextScene.num = text.getLabel()._originalText;
-                cc.director.runScene(new cc.TransitionFade(1.2, this.nextScene));
-            }, this);
+            var levelItem = new cc.MenuItemFont(i.toString(), this.onItemClick(this.nextScene, i));
             levelItem.setFontSize(100);
             levels.push(levelItem)
         }
@@ -28,5 +25,12 @@ var LevelScene = cc.Scene.extend({
         menu.alignItemsInColumns(5, 5, 5, 5, 1);
         this.addChild(menu);
 
+    },
+
+    onItemClick: function (scene, i) {
+        return function () {
+            scene.num = i;
+            cc.director.runScene(new cc.TransitionFade(1.2, scene));
+        }
     }
 });

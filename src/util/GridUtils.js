@@ -14,7 +14,7 @@ var GridUtils = {
 
     getCellByPoint: function (point, border, size, cells) {
         var column = Math.abs(Math.round((point.x - border - size * .5) / size));
-        var row = Math.abs(Math.round(((point.y - border - size * .5 - (DIM.height - DIM.width) / 2) / size)));
+        var row = Math.abs(Math.round(((point.y - border - size * .5) / size)));
         return cells[row][column];
     },
 

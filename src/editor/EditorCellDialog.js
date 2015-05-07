@@ -34,12 +34,11 @@ var EditorCellDialog = cc.Layer.extend({
         var symbols = [".", "+", "-", "*", "/", "<<<"];
         this.nums = GridUtils.buildGrid(4, 4);
         var figures = [];
-        var add = this.addChar(this.field);
         for (var i = 0; i < 10; i++) {
-            figures.push(this.createTextButton("" + i, add));
+            figures.push(this.createTextButton("" + i, this.addChar(this.field, "" + i)));
         }
-        for (var i = 0; i < symbols.length; i++) {
-            figures.push(this.createTextButton(symbols[i], add));
+        for (i = 0; i < symbols.length; i++) {
+            figures.push(this.createTextButton(symbols[i], this.addChar(this.field, i)));
         }
 
         var menu = new cc.Menu(figures);
@@ -48,10 +47,8 @@ var EditorCellDialog = cc.Layer.extend({
         this.addChild(menu);
     },
 
-
-    addChar: function (field) {
-        return function (char) {
-            char = char.getString();
+    addChar: function (field, char) {
+        return function () {
             var str = field.getString();
             if (char == "<<<" && str.length > 0) {
                 str = str.substring(0, str.length - 1);

@@ -1,4 +1,5 @@
 var LevelIO = {
+
     read: function (num) {
         var data = cc.sys.localStorage.getItem("level_" + num);
         if (data == null || data.length < 5) {
@@ -23,7 +24,7 @@ var LevelIO = {
     },
 
     save: function (level) {
-        cc.sys.localStorage.setItem("level_" + level.value, JSON.stringify(level, function (key, value) {
+        cc.sys.localStorage.setItem("level_" + level.num, JSON.stringify(level, function (key, value) {
             if (key == 'view') {
                 return null;
             }

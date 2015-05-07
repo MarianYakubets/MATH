@@ -12,6 +12,8 @@ var CellController = cc.Class.extend({
         var touchListener = GridUtils.createTouchListener();
         touchListener.controller = this;
         cc.eventManager.addListener(touchListener, this.grid);
+
+        label.setString("Level: " + level.num);
     },
 
     executeSelection: function (result) {

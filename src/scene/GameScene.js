@@ -20,7 +20,7 @@ var GameScene = cc.Scene.extend({
         this.addChild(new GameLayer(LevelManager.getLevel(this.num), label), 1);
 
         var backItem = new cc.MenuItemFont("back", function () {
-            cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene()));
+            cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene(new GameScene())));
         });
 
         var menu = new cc.Menu(backItem);
