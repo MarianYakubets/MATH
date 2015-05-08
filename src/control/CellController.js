@@ -63,6 +63,9 @@ var CellController = cc.Class.extend({
         return false;
     },
 
+    possibleMove: function (cell, newCell) {
+    },
+
     onTouchBegan: function (p) {
         this.choseCell(GridUtils.getCellByPoint(p, this.grid.border, this.grid.size, this.cells));
     },
@@ -73,6 +76,10 @@ var CellController = cc.Class.extend({
 
     onTouchEnded: function (p) {
         var result = '';
+        if (this.chosenCells.length < 2) {
+            this.chosenCells = [];
+            return;
+        }
         this.chosenCells.forEach(function (cell) {
             result += cell.value;
         });

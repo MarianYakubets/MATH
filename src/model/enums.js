@@ -4,7 +4,7 @@ if (typeof TypeOfCell == "undefined") {
     TypeOfCell.pined = 1;
     TypeOfCell.start = 2;
     TypeOfCell.end = 3;
-    TypeOfCell.middle = 4;
+    TypeOfCell.block = 4;
     TypeOfCell.none = 5;
 }
 
@@ -13,9 +13,8 @@ var Type = Object.freeze({
     pined: 1,
     start: 2,
     end: 3,
-    middle: 4,
-    remains: 5,
-    none: 6
+    blocked: 4,
+    gate: 5
 });
 
 var expression = Object.freeze({
