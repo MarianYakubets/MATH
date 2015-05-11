@@ -45,7 +45,7 @@ var EditorDialog = cc.Layer.extend({
             var cells = dialog.level.cells;
             var row = [];
             cells[cells.length - 1].forEach(function (cell) {
-                row.push(new Cell(cc.p(cell.pos.x, cell.pos.y + 1), ""))
+                row.push(new Cell(cc.p(cell.pos.x, cell.pos.y + 1)))
             });
             cells.push(row);
             dialog.init(dialog.level);
@@ -63,7 +63,7 @@ var EditorDialog = cc.Layer.extend({
         return function () {
             dialog.level.cells.forEach(function (row) {
                 var cell = row[row.length - 1];
-                row.push(new Cell(cc.p(cell.pos.x + 1, cell.pos.y), ""))
+                row.push(new Cell(cc.p(cell.pos.x + 1, cell.pos.y)))
             });
             dialog.init(dialog.level);
         };

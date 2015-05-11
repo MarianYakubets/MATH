@@ -1,19 +1,20 @@
 var Cell = cc.Class.extend({
     pos: null,
-    value: 0,
+    value: "",
     type: Type.default,
     view: null,
 
-    ctor: function (pos, type, value) {
+    ctor: function (pos, value, type) {
         this.pos = pos;
-        this.type = type;
-        this.value = value;
+        if (value) {
+            this.value = value;
+        }
+        if (type) {
+            this.type = type;
+        }
     },
 
     setNum: function (num) {
-        if (num >= 0) {
-            num = "+" + num;
-        }
         this.value = num;
         this.view.setNum(num);
     },

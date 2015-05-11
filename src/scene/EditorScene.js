@@ -1,10 +1,9 @@
 var EditorScene = cc.Scene.extend({
-    num: null,
+    num: 0,
 
     ctor: function (num) {
         this._super();
-        this.num = num
-
+        this.num = num;
     },
 
     onEnter: function () {

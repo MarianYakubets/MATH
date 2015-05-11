@@ -4,12 +4,12 @@ var MainScene = cc.Scene.extend({
         this._super();
         this.addChild(new BackgroundLayer());
         var gameItem = new cc.MenuItemFont("GAME", function () {
-            cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene(new GameScene)));
+            cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene("Game")));
         }, this);
         gameItem.setFontSize(100);
 
         var editItem = new cc.MenuItemFont("EDIT", function () {
-            cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene(new EditorScene())));
+            cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene("Editor")));
         }, this);
         editItem.setFontSize(100);
 

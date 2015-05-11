@@ -6,7 +6,7 @@ var Box = cc.Node.extend({
     ctor: function (figure, size) {
         this._super();
         this.size = size;
-        this.pic = new cc.Sprite(res.White_jpg);
+        this.pic = new cc.Sprite(res.Square_png);
 
         this.pic.setScale(size.y / this.pic.height);
 

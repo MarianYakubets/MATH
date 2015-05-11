@@ -1,9 +1,9 @@
 var LevelScene = cc.Scene.extend({
-    nextScene: null,
+    sceneName: "Level",
 
-    ctor: function (nextScene) {
+    ctor: function (sceneName) {
         this._super();
-        this.nextScene = nextScene;
+        this.sceneName = sceneName;
     },
 
     onEnter: function () {
@@ -12,7 +12,7 @@ var LevelScene = cc.Scene.extend({
 
         var levels = [];
         for (var i = 1; i <= 20; i++) {
-            var levelItem = new cc.MenuItemFont(i.toString(), this.onItemClick(this.nextScene, i));
+            var levelItem = new cc.MenuItemFont(i.toString(), this.onItemClick(this.sceneName, i));
             levelItem.setFontSize(100);
             levels.push(levelItem)
         }
@@ -27,9 +27,9 @@ var LevelScene = cc.Scene.extend({
 
     },
 
-    onItemClick: function (scene, i) {
+    onItemClick: function (name, i) {
         return function () {
-            scene.num = i;
+            var scene = eval("new " + name + "Scene(" + i + ");");
             cc.director.runScene(new cc.TransitionFade(1.2, scene));
         }
     }

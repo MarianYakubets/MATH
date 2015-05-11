@@ -38,7 +38,7 @@ var EditorCellDialog = cc.Layer.extend({
             figures.push(this.createTextButton("" + i, this.addChar(this.field, "" + i)));
         }
         for (i = 0; i < symbols.length; i++) {
-            figures.push(this.createTextButton(symbols[i], this.addChar(this.field, i)));
+            figures.push(this.createTextButton(symbols[i], this.addChar(this.field, symbols[i])));
         }
 
         var menu = new cc.Menu(figures);
