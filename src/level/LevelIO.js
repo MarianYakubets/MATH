@@ -15,7 +15,7 @@ var LevelIO = {
         data.cells.forEach(function (row) {
             newRow = [];
             row.forEach(function (cell) {
-                newCell = new Cell(cell.pos, cell.type, cell.value);
+                newCell = new Cell(cell.pos, cell.value, cell.type);
                 newRow.push(newCell);
             });
             cells.push(newRow);

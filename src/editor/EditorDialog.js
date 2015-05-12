@@ -30,13 +30,13 @@ var EditorDialog = cc.Layer.extend({
 
     save: function (dialog) {
         return function () {
-            LevelIO.save(dialog.level);
+            LevelManager.save(dialog.level);
         };
     },
 
     load: function (dialog) {
         return function () {
-            dialog.init(LevelIO.read(dialog.level.value));
+            dialog.init(LevelManager.read(dialog.level.value));
         };
     },
 

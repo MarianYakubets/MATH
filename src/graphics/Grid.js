@@ -29,7 +29,7 @@ var Grid = cc.Node.extend({
                 square = new Box(cells[j][i].value, cc.p(this.size, this.size));
                 square.setPosition(posX, posY);
 
-                cells[j][i].view = square;
+                cells[j][i].setView(square);
                 this.addChild(square);
             }
         }

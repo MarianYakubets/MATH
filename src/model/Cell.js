@@ -14,6 +14,12 @@ var Cell = cc.Class.extend({
         }
     },
 
+    setView:function(view){
+      this.view = view;
+      this.setNum(this.value);
+      this.setType(this.type);
+    },
+
     setNum: function (num) {
         this.value = num;
         this.view.setNum(num);
@@ -29,6 +35,11 @@ var Cell = cc.Class.extend({
         if (this.view != null) {
             this.view.deselect();
         }
+    },
+
+    setType:function(type){
+        this.type = type;
+        this.view.setType(type);
     }
 
 });

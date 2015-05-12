@@ -41,8 +41,15 @@ var EditorCellDialog = cc.Layer.extend({
             figures.push(this.createTextButton(symbols[i], this.addChar(this.field, symbols[i])));
         }
 
+        figures.push(this.createTextButton("D", this.setCellType(this, Type.default)));
+        figures.push(this.createTextButton("P", this.setCellType(this, Type.pined)));
+        figures.push(this.createTextButton("E", this.setCellType(this, Type.end)));
+        figures.push(this.createTextButton("G", this.setCellType(this, Type.gate)));
+        figures.push(this.createTextButton("B", this.setCellType(this, Type.blocked)));
+        figures.push(this.createTextButton("S", this.setCellType(this, Type.start)));
+
         var menu = new cc.Menu(figures);
-        menu.alignItemsInColumns(4, 4, 4, 4);
+        menu.alignItemsInColumns(4, 4, 4, 4, 6);
         menu.setPosition(DIM.center);
         this.addChild(menu);
     },
@@ -73,6 +80,12 @@ var EditorCellDialog = cc.Layer.extend({
         return function () {
             parent.cell.setNum(parent.field.getString());
             parent.goBack(parent)();
+        }
+    },
+
+    setCellType: function (parent, type) {
+        return function () {
+            parent.cell.setType(type);
         }
     },
 

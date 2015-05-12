@@ -29,5 +29,23 @@ var Box = cc.Node.extend({
     setNum: function (num) {
         this.label.setString(num);
         this.label.setFontFillColor(cc.color(63, 81, 181));
+    },
+
+    setType: function (type) {
+        switch(type){
+            case Type.default:
+                break;
+            case Type.blocked:
+                break;
+            case Type.end:
+                break;
+            case Type.gate:
+                this.pic.setColor(cc.color(197, 50, 50));
+                break;
+            case Type.pined:
+                break;
+            case Type.start:
+                break;
+        }
     }
 });
