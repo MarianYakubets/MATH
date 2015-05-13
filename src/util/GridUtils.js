@@ -5,7 +5,8 @@ var GridUtils = {
         for (var i = 0; i < rows; i++) {
             row = [];
             for (var j = 0; j < columns; j++) {
-                row.push(new Cell(cc.p(i, j)));
+                row.push(new Cell(cc.p(i, j),""+i+","+j));
+
             }
             cells.push(row);
         }

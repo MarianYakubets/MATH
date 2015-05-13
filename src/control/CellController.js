@@ -35,11 +35,29 @@ var CellController = cc.Class.extend({
         this.chosenCells.forEach(function (cell) {
             cell.deselect();
         });
+        this.chosenCells = [];
     },
 
     choseCell: function (cell) {
         if (this.chosenCells.indexOf(cell) == (-1)) {
-            if (!this.isConnected(cell)) {
+            if (this.chosenCells.length == 0) {
+                this.chosenCells.push(cell);
+                cell.select();
+                return;
+            }
+            var lastCell = this.chosenCells[this.chosenCells.length - 1];
+            if (!this.isConnected(lastCell, cell)) {
+                return;
+            }
+            if (this.isGateConnected(lastCell, cell)) {
+                if (this.chosenCells.length == 1) {
+                    this.chosenCells.push(cell);
+                    cell.select();
+                    this.tryOpenGate(lastCell, cell);
+                }
+                return;
+            }
+            if (this.isTwoOperations(lastCell, cell)) {
                 return;
             }
             this.chosenCells.push(cell);
@@ -47,23 +65,27 @@ var CellController = cc.Class.extend({
         }
     },
 
-    isConnected: function (cell) {
+    isConnected: function (lastCell, cell) {
         if (this.chosenCells.length == 0) {
             return true;
         }
-        var pos = this.chosenCells[this.chosenCells.length - 1].pos;
-
+        var pos = lastCell.pos;
         if (pos.x == cell.pos.x && Math.abs(pos.y - cell.pos.y) == 1) {
             return true;
         }
+        return !!(pos.y == cell.pos.y && Math.abs(pos.x - cell.pos.x) == 1);
 
-        if (pos.y == cell.pos.y && Math.abs(pos.x - cell.pos.x) == 1) {
-            return true;
+    },
+
+    isTwoOperations: function (lastCell, cell) {
+        if (isNaN(lastCell.value)) {
+            return !!isNaN(cell.value);
         }
         return false;
     },
 
-    possibleMove: function (cell, newCell) {
+    isGateConnected: function (lastCell, cell) {
+        return !!(lastCell.type == Type.gate || cell.type == Type.gate);
     },
 
     onTouchBegan: function (p) {
@@ -75,9 +97,13 @@ var CellController = cc.Class.extend({
     },
 
     onTouchEnded: function (p) {
+        this.evaluateExpression();
+    },
+
+    evaluateExpression: function () {
         var result = '';
         if (this.chosenCells.length < 2) {
-            this.chosenCells = [];
+            this.rollbackSelection();
             return;
         }
         this.chosenCells.forEach(function (cell) {
@@ -90,6 +116,17 @@ var CellController = cc.Class.extend({
             this.rollbackSelection();
         }
         this.chosenCells = [];
+    },
+
+    tryOpenGate: function (lastCell, cell) {
+        if (lastCell.value == cell.value) {
+            this.chosenCells.forEach(function (cell) {
+                cell.view.visible = false;
+                controller.cells[cell.pos.x][cell.pos.y] = null;
+            });
+        } else {
+            this.rollbackSelection();
+        }
     }
 
 });

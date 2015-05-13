@@ -34,6 +34,7 @@ var Box = cc.Node.extend({
     setType: function (type) {
         switch(type){
             case Type.default:
+                this.pic.setColor(cc.color(255, 255, 255));
                 break;
             case Type.blocked:
                 break;
