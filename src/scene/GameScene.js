@@ -6,6 +6,11 @@ var GameScene = cc.Scene.extend({
         this.num = num;
     },
 
+    onExit:function(){
+        this._super();
+        this.removeAllChildrenWithCleanup(true);
+    },
+
     onEnter: function () {
         this._super();
 
