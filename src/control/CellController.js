@@ -3,15 +3,28 @@ var CellController = cc.Class.extend({
     cells: [],
     chosenCells: [],
     lastCell: null,
+    result: null,
+    touchListener:null,
 
     ctor: function (grid, level, label) {
         this.grid = grid;
         this.cells = level.cells;
+
+        var gates = 0;
+        this.cells.forEach(function (r) {
+            r.forEach(function (c) {
+                if (c.type == Type.gate) {
+                    gates++;
+                }
+            });
+        });
+        this.result = new Result(level.num, gates);
+
         this.grid.drawGrid(this.cells);
 
-        var touchListener = GridUtils.createTouchListener();
-        touchListener.controller = this;
-        cc.eventManager.addListener(touchListener, this.grid);
+        this.touchListener = GridUtils.createTouchListener();
+        this.touchListener.controller = this;
+        cc.eventManager.addListener(this.touchListener, this.grid);
 
         label.setString("Level: " + level.num);
     },
@@ -39,30 +52,30 @@ var CellController = cc.Class.extend({
     },
 
     choseCell: function (cell) {
-        if (this.chosenCells.indexOf(cell) == (-1)) {
-            if (this.chosenCells.length == 0) {
-                this.chosenCells.push(cell);
-                cell.select();
-                return;
-            }
-            var lastCell = this.chosenCells[this.chosenCells.length - 1];
-            if (!this.isConnected(lastCell, cell)) {
-                return;
-            }
-            if (this.isGateConnected(lastCell, cell)) {
-                if (this.chosenCells.length == 1) {
+            if (cell != null && this.chosenCells.indexOf(cell) == (-1)) {
+                if (this.chosenCells.length == 0) {
                     this.chosenCells.push(cell);
                     cell.select();
-                    this.tryOpenGate(lastCell, cell);
+                    return;
                 }
-                return;
+                var lastCell = this.chosenCells[this.chosenCells.length - 1];
+                if (!this.isConnected(lastCell, cell)) {
+                    return;
+                }
+                if (this.isGateConnected(lastCell, cell)) {
+                    if (this.chosenCells.length == 1) {
+                        this.chosenCells.push(cell);
+                        cell.select();
+                        this.tryOpenGate(lastCell, cell);
+                    }
+                    return;
+                }
+                if (this.isTwoOperations(lastCell, cell)) {
+                    return;
+                }
+                this.chosenCells.push(cell);
+                cell.select();
             }
-            if (this.isTwoOperations(lastCell, cell)) {
-                return;
-            }
-            this.chosenCells.push(cell);
-            cell.select();
-        }
     },
 
     isConnected: function (lastCell, cell) {
@@ -115,15 +128,35 @@ var CellController = cc.Class.extend({
         } catch (err) {
             this.rollbackSelection();
         }
+        this.endMove();
+    },
+
+    endMove: function () {
+        this.result.moves++;
         this.chosenCells = [];
+    },
+
+    endLevel: function () {
+        cc.eventManager.removeListener(this.touchListener, this.grid);
+        cc.director.runScene(new cc.TransitionFade(1.2, new FinishScene(this.result)));
     },
 
     tryOpenGate: function (lastCell, cell) {
         if (lastCell.value == cell.value) {
+            var controller = this;
             this.chosenCells.forEach(function (cell) {
-                cell.view.visible = false;
+                if (cell.type == Type.gate) {
+                    cell.deselect();
+                    cell.unlock();
+                } else {
+                    cell.view.visible = false;
+                }
                 controller.cells[cell.pos.x][cell.pos.y] = null;
             });
+            this.endMove();
+            if (this.result.openGate()) {
+                this.endLevel();
+            }
         } else {
             this.rollbackSelection();
         }

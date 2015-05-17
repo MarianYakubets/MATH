@@ -5,7 +5,7 @@ var GridUtils = {
         for (var i = 0; i < rows; i++) {
             row = [];
             for (var j = 0; j < columns; j++) {
-                row.push(new Cell(cc.p(i, j),""+i+","+j));
+                row.push(new Cell(cc.p(i, j), "" + i + "," + j));
 
             }
             cells.push(row);
@@ -15,9 +15,14 @@ var GridUtils = {
     },
 
     getCellByPoint: function (point, border, size, cells) {
-        var column = Math.abs(Math.round((point.x - border - size * .5) / size));
-        var row = Math.abs(Math.round(((point.y - border - size * .5) / size)));
-        return cells[row][column];
+        try {
+            var column = Math.abs(Math.round((point.x - border - size * .5) / size));
+            var row = Math.abs(Math.round(((point.y - border - size * .5) / size)));
+            return cells[row][column];
+        }
+        catch (err) {
+            cc.log(err);
+        }
     },
 
     createTouchListener: function () {
@@ -32,7 +37,7 @@ var GridUtils = {
             },
 
             onTouchMoved: function (touch, event) {
-                if(this.controller.onTouchMoved == undefined){
+                if (this.controller.onTouchMoved == undefined) {
                     return;
                 }
                 this.controller.onTouchMoved(touch.getLocation());
@@ -40,7 +45,7 @@ var GridUtils = {
             },
 
             onTouchEnded: function (touch, event) {
-                if(this.controller.onTouchEnded == undefined){
+                if (this.controller.onTouchEnded == undefined) {
                     return;
                 }
                 this.controller.onTouchEnded();

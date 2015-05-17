@@ -1,11 +1,34 @@
 var LevelIO = {
 
     read: function (num) {
-        var data = cc.sys.localStorage.getItem("level_" + num);
+        //var data = cc.sys.localStorage.getItem("level_" + num);
+        var data = null;
         if (data == null || data.length < 5) {
-            return new Level(num, GridUtils.buildGrid(5, 6));
+            data = this.getFile(num);
+            if (data == null) {
+                return new Level(num, GridUtils.buildGrid(2, 2));
+            } else {
+                return this.createLevelFromSavedData(data);
+            }
         }
         return this.createLevelFromSavedData(JSON.parse(data));
+    },
+
+    getFile: function (num) {
+        try {
+            var data = null;
+            var wait = true;
+            cc.loader.load(levels[num], function (err, results) {
+                data = results[0];
+                wait = false;
+            });
+            while (wait) {
+            }
+            return data;
+
+        } catch (err) {
+            return null;
+        }
     },
 
     createLevelFromSavedData: function (data) {
@@ -24,11 +47,13 @@ var LevelIO = {
     },
 
     save: function (level) {
-        cc.sys.localStorage.setItem("level_" + level.num, JSON.stringify(level, function (key, value) {
+        var result = JSON.stringify(level, function (key, value) {
             if (key == 'view') {
                 return null;
             }
             return value;
-        }));
+        });
+        cc.sys.localStorage.setItem("level_" + level.num, result);
+        cc.log(result);
     }
 };

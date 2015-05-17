@@ -15,7 +15,9 @@ var GameScene = cc.Scene.extend({
         label.setFontFillColor(cc.color(255, 255, 255));
         this.addChild(new BackgroundLayer(), 0);
         this.addChild(label, 10);
-        this.addChild(new GameLayer(LevelManager.getLevel(this.num), label), 1);
+        var grid = new Grid();
+        this.controller = new CellController(grid, LevelManager.getLevel(this.num), label);
+        this.addChild(grid, 1);
 
         var backItem = new cc.MenuItemFont("back", function () {
             cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene(new GameScene())));

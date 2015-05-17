@@ -24,6 +24,11 @@ var Box = cc.Node.extend({
 
     deselect: function () {
         this.pic.setColor(cc.color(255, 255, 255));
+        this.setType(this.type);
+    },
+
+    unlock:function(){
+        this.setNum("0");
     },
 
     setNum: function (num) {
@@ -32,6 +37,7 @@ var Box = cc.Node.extend({
     },
 
     setType: function (type) {
+        this.type = type;
         switch(type){
             case Type.default:
                 this.pic.setColor(cc.color(255, 255, 255));

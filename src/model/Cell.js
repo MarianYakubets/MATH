@@ -40,6 +40,10 @@ var Cell = cc.Class.extend({
     setType:function(type){
         this.type = type;
         this.view.setType(type);
+    },
+
+    unlock:function(){
+        this.view.unlock();
     }
 
 });
