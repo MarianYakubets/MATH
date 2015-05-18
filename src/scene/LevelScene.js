@@ -27,6 +27,11 @@ var LevelScene = cc.Scene.extend({
 
     },
 
+    onExit:function(){
+        this._super();
+        this.removeAllChildrenWithCleanup();
+    },
+
     onItemClick: function (name, i) {
         return function () {
             var scene = eval("new " + name + "Scene(" + i + ");");

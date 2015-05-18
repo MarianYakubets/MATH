@@ -138,6 +138,9 @@ var CellController = cc.Class.extend({
 
     endLevel: function () {
         cc.eventManager.removeListener(this.touchListener, this.grid);
+        this.touchListener = null;
+        this.grid.visible = false;
+        this.grid.removeAllChildrenWithCleanup(true);
         cc.director.runScene(new cc.TransitionFade(1.2, new FinishScene(this.result)));
     },
 

@@ -8,7 +8,7 @@ var EditorPanel = cc.Node.extend({
         });
         var save = this.createTextButton("save", dialog.save(dialog));
         var load = this.createTextButton("load", dialog.load(dialog));
-        var test = this.createTextButton("test", dialog.load(dialog));
+        var test = this.createTextButton("test", dialog.test(dialog));
 
         var rp = this.createTextButton("R+", dialog.rp(dialog));
         var rm = this.createTextButton("R-", dialog.rm(dialog));

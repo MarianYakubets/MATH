@@ -10,5 +10,9 @@ var EditorScene = cc.Scene.extend({
         this._super();
         this.addChild(new BackgroundLayer());
         this.addChild(new EditorDialog(LevelManager.getLevel(this.num)));
+    },
+    onExit:function(){
+        this._super();
+        this.removeAllChildrenWithCleanup();
     }
 });

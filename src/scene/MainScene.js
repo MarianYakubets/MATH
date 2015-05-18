@@ -23,6 +23,10 @@ var MainScene = cc.Scene.extend({
         var menu = new cc.Menu(gameItem, editItem, exitItem);
         menu.alignItemsVerticallyWithPadding(100);
         this.addChild(menu);
+    },
 
+    onExit:function(){
+        this._super();
+        this.removeAllChildrenWithCleanup();
     }
 });

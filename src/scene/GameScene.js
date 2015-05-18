@@ -27,10 +27,18 @@ var GameScene = cc.Scene.extend({
         var backItem = new cc.MenuItemFont("back", function () {
             cc.director.runScene(new cc.TransitionFade(1.2, new LevelScene(new GameScene())));
         });
+        var editItem = new cc.MenuItemFont("edit", this.edit(this.num));
 
-        var menu = new cc.Menu(backItem);
+        var menu = new cc.Menu(backItem, editItem);
+        menu.alignItemsHorizontallyWithPadding(10);
         menu.setPosition(DIM.width / 2, DIM.height - 50);
 
         this.addChild(menu, 9);
+    },
+
+    edit: function (num) {
+        return function () {
+            cc.director.runScene(new cc.TransitionFade(new LevelScene(num)));
+        }
     }
 });

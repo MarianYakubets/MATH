@@ -34,6 +34,12 @@ var EditorDialog = cc.Layer.extend({
         };
     },
 
+    test: function (dialog) {
+        return function () {
+            cc.director.runScene(new cc.TransitionFade(1.2, new GameScene(dialog.level.num)));
+        };
+    },
+
     load: function (dialog) {
         return function () {
             dialog.init(LevelManager.read(dialog.level.value));
@@ -45,7 +51,7 @@ var EditorDialog = cc.Layer.extend({
             var cells = dialog.level.cells;
             var row = [];
             cells[cells.length - 1].forEach(function (cell) {
-                row.push(new Cell(cc.p(cell.pos.x + 1, cell.pos.y),(cell.pos.x+1)+","+cell.pos.y));
+                row.push(new Cell(cc.p(cell.pos.x + 1, cell.pos.y)));
             });
             cells.push(row);
             dialog.init(dialog.level);
@@ -63,7 +69,7 @@ var EditorDialog = cc.Layer.extend({
         return function () {
             dialog.level.cells.forEach(function (row) {
                 var cell = row[row.length - 1];
-                row.push(new Cell(cc.p(cell.pos.x, cell.pos.y+1), ""+cell.pos.x+","+(cell.pos.y+1)));
+                row.push(new Cell(cc.p(cell.pos.x, cell.pos.y + 1)));
             });
             dialog.init(dialog.level);
         };
