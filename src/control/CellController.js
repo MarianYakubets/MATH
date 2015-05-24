@@ -4,7 +4,7 @@ var CellController = cc.Class.extend({
     chosenCells: [],
     lastCell: null,
     result: null,
-    touchListener:null,
+    touchListener: null,
 
     ctor: function (grid, level, label) {
         this.grid = grid;
@@ -24,7 +24,32 @@ var CellController = cc.Class.extend({
 
         this.touchListener = GridUtils.createTouchListener();
         this.touchListener.controller = this;
-        cc.eventManager.addListener(this.touchListener, this.grid);
+        //cc.eventManager.addListener(this.touchListener, this.grid);
+
+        if ('mouse' in cc.sys.capabilities) {
+            cc.eventManager.addListener({
+                event: cc.EventListener.MOUSE,
+                swallowTouches: true,
+                onMouseDown: this.onTouchBegan(this),
+                onMouseMove: this.onTouchMoved(this),
+                onMouseUp: this.onTouchEnded(this)
+            }, this.grid);
+        } else {
+            cc.log("Mouse is not supported on desktop");
+        }
+
+        if (cc.sys.capabilities.hasOwnProperty('touches')) {
+            cc.eventManager.addListener({
+                event: cc.EventListener.TOUCH_ONE_BY_ONE,
+                swallowTouches: true,
+                onTouchBegan: this.onTouchBegan(this),
+                onTouchMoved: this.onTouchMoved(this),
+                onTouchEnded: this.onTouchEnded(this),
+                onTouchCancelled: this.onTouchCancelled(this)
+            }, this.grid);
+        } else {
+            cc.log("TOUCH-ONE-BY-ONE is not supported on desktop");
+        }
 
         label.setString("Level: " + level.num);
     },
@@ -52,30 +77,30 @@ var CellController = cc.Class.extend({
     },
 
     choseCell: function (cell) {
-            if (cell != null && this.chosenCells.indexOf(cell) == (-1)) {
-                if (this.chosenCells.length == 0) {
-                    this.chosenCells.push(cell);
-                    cell.select();
-                    return;
-                }
-                var lastCell = this.chosenCells[this.chosenCells.length - 1];
-                if (!this.isConnected(lastCell, cell)) {
-                    return;
-                }
-                if (this.isGateConnected(lastCell, cell)) {
-                    if (this.chosenCells.length == 1) {
-                        this.chosenCells.push(cell);
-                        cell.select();
-                        this.tryOpenGate(lastCell, cell);
-                    }
-                    return;
-                }
-                if (this.isTwoOperations(lastCell, cell)) {
-                    return;
-                }
+        if (cell != null && this.chosenCells.indexOf(cell) == (-1)) {
+            if (this.chosenCells.length == 0) {
                 this.chosenCells.push(cell);
                 cell.select();
+                return;
             }
+            var lastCell = this.chosenCells[this.chosenCells.length - 1];
+            if (!this.isConnected(lastCell, cell)) {
+                return;
+            }
+            if (this.isGateConnected(lastCell, cell)) {
+                if (this.chosenCells.length == 1) {
+                    this.chosenCells.push(cell);
+                    cell.select();
+                    this.tryOpenGate(lastCell, cell);
+                }
+                return;
+            }
+            if (this.isTwoOperations(lastCell, cell)) {
+                return;
+            }
+            this.chosenCells.push(cell);
+            cell.select();
+        }
     },
 
     isConnected: function (lastCell, cell) {
@@ -101,16 +126,28 @@ var CellController = cc.Class.extend({
         return !!(lastCell.type == Type.gate || cell.type == Type.gate);
     },
 
-    onTouchBegan: function (p) {
-        this.choseCell(GridUtils.getCellByPoint(p, this.grid.border, this.grid.size, this.cells));
+    onTouchBegan: function (contr) {
+        return function (p) {
+            contr.choseCell(GridUtils.getCellByPoint(p.getLocation(), contr.grid.border, contr.grid.size, contr.cells));
+        }
     },
 
-    onTouchMoved: function (p) {
-        this.choseCell(GridUtils.getCellByPoint(p, this.grid.border, this.grid.size, this.cells));
+    onTouchMoved: function (contr) {
+        return function (p) {
+            contr.choseCell(GridUtils.getCellByPoint(p.getLocation(), contr.grid.border, contr.grid.size, contr.cells));
+        }
     },
 
-    onTouchEnded: function (p) {
-        this.evaluateExpression();
+    onTouchEnded: function (contr) {
+        return function (p) {
+            contr.evaluateExpression();
+        }
+    },
+
+    onTouchCancelled: function (p) {
+        return function (p) {
+            //contr.evaluateExpression();
+        }
     },
 
     evaluateExpression: function () {
@@ -126,6 +163,7 @@ var CellController = cc.Class.extend({
             result = eval(result);
             this.executeSelection(result);
         } catch (err) {
+            this.chosenCells = [];
             this.rollbackSelection();
         }
         this.endMove();
@@ -137,7 +175,8 @@ var CellController = cc.Class.extend({
     },
 
     endLevel: function () {
-        cc.eventManager.removeListener(this.touchListener, this.grid);
+        //cc.eventManager.removeListener(this.touchListener, this.grid);
+        this.cells = null;
         this.touchListener = null;
         this.grid.visible = false;
         this.grid.removeAllChildrenWithCleanup(true);
